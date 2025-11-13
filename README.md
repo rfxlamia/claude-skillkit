@@ -41,11 +41,11 @@ The `readme-expert.skill` included in this repository demonstrates the framework
 
 **Creation → Usage → Validation (Recursive Loop):**
 ```
-Advanced Skill Creator → creates → readme-expert skill
+claude-skillkit → creates → readme-expert skill
                                          ↓
                               (quality score 9.0+)
                                          ↓
-                    readme-expert skill → documents → Advanced Skill Creator
+                    readme-expert skill → documents →  claude-skillkit
                                                               ↓
                                                     (this README - score 9.5/10)
 ```
