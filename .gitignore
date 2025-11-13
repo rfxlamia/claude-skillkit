@@ -7,3 +7,6 @@ __pycache__/
 
 # Environment variables
 .env
+
+# Claude Code local settings
+.claude/
