@@ -3,9 +3,6 @@
 [![Version](https://img.shields.io/badge/version-1.2.0-green.svg)](https://github.com/rfxlamia/claude-advanced-skill-creator)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.x-blue.svg)](https://www.python.org/)
-[![Claude Code](https://img.shields.io/badge/Made%20with-Claude%20Code-blueviolet.svg)](https://claude.com/claude-code)
-[![Quality Score](https://img.shields.io/badge/quality-9.0%2B-brightgreen.svg)](#quality-gates)
-[![Maintenance](https://img.shields.io/badge/maintained-yes-green.svg)](https://github.com/rfxlamia/claude-advanced-skill-creator/graphs/commit-activity)
 
 > Professional skill creation with research-driven workflow and automated validation.
 
