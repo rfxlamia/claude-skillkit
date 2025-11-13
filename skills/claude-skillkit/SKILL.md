@@ -7,12 +7,12 @@ description: >
   vs Subagents, migrating documents to skills, or running individual validation tools.
   
   PRIMARY TRIGGERS:
-  "create skill" -> Full creation (12 steps with research + execution planning)
-  "validate skill" -> Validation workflow (steps 3-8)
-  "Skills vs Subagents" -> Decision workflow (step 0)
-  "convert doc to skill" -> Migration workflow
-  "estimate tokens" -> Token optimization
-  "security scan" -> Security audit
+  "create skill" = Full creation (12 steps with research + execution planning)
+  "validate skill" = Validation workflow (steps 3-8)
+  "Skills vs Subagents" = Decision workflow (step 0)
+  "convert doc to skill" = Migration workflow
+  "estimate tokens" = Token optimization
+  "security scan" = Security audit
   
   WORKFLOW COMPLIANCE: Structured workflows with validation checkpoints.
   Research phase (Step 1c-1d) ensures skills based on proven approaches.
