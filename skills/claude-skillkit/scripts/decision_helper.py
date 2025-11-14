@@ -379,10 +379,10 @@ class DecisionHelper:
             confidence = 0.60 + (self.score + 1) * 0.033  # 60-70%
         elif self.score >= -5:
             recommendation = "Moderate Subagent"
-            confidence = 0.75 + abs(self.score + 5) * 0.033  # 75-85%
+            confidence = 0.75 + (abs(self.score) - 3) * 0.05  # 75-85%
         else:
             recommendation = "Strong Subagent"
-            confidence = 0.90 + abs(self.score + 8) * 0.025  # 90-95%
+            confidence = 0.90 + (abs(self.score) - 6) * 0.025  # 90-95%
         
         return {
             "status": "success",
