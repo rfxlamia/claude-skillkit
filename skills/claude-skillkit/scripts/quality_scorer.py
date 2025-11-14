@@ -266,9 +266,9 @@ class QualityScorer:
         
         # Check imperative form
         imperative_ratio = self._count_imperative_sentences(content)
-        if imperative_ratio > 0.7:
+        if imperative_ratio > 0.5:
             score += 5
-        elif imperative_ratio > 0.5:
+        elif imperative_ratio > 0.3:
             score += 3
             issues.append("More imperative voice recommended")
         else:
@@ -548,24 +548,56 @@ class QualityScorer:
             'use', 'run', 'execute', 'create', 'configure', 'install',
             'check', 'validate', 'ensure', 'verify', 'set', 'define',
             'specify', 'provide', 'include', 'add', 'remove', 'update',
-            'follow', 'read', 'write', 'call', 'invoke'
+            'follow', 'read', 'write', 'call', 'invoke', 'load', 'scan',
+            'extract', 'detect', 'discover', 'generate', 'implement'
         ]
-        
+
+        # Remove YAML frontmatter
+        processed_content = content
+        if content.startswith('---\n'):
+            end_idx = content.find('\n---\n', 4)
+            if end_idx != -1:
+                processed_content = content[end_idx + 5:]
+
+        # Remove code blocks to avoid counting code as sentences
+        processed_content = re.sub(r'```.*?```', '', processed_content, flags=re.DOTALL)
+
         # Split into sentences (approximate)
-        sentences = re.split(r'[.!?]\s+', content)
+        sentences = re.split(r'[.!?]\n', processed_content)
         sentences = [s.strip() for s in sentences if len(s.strip()) > 10]
-        
+
         if not sentences:
             return 0.0
-        
-        # Count sentences starting with imperative verbs
+
+        # Count sentences with imperative verbs
         imperative_count = 0
         for sentence in sentences:
-            # Get first word
-            words = sentence.lower().split()
-            if words and any(words[0].startswith(verb) for verb in imperative_verbs):
+            # Strip markdown formatting (bold, italic, inline code)
+            clean_sentence = re.sub(r'\*\*([^*]+)\*\*', r'\1', sentence)
+            clean_sentence = re.sub(r'\*([^*]+)\*', r'\1', clean_sentence)
+            clean_sentence = re.sub(r'`([^`]+)`', r'\1', clean_sentence)
+            clean_sentence = re.sub(r'\[([^\]]+)\]\([^\)]+\)', r'\1', clean_sentence)
+
+            # Remove special markers and colons at start
+            clean_sentence = re.sub(r'^[\-\*\+]\s+', '', clean_sentence)
+            clean_sentence = clean_sentence.strip()
+
+            if not clean_sentence:
+                continue
+
+            # Get first 3 words to check for imperative
+            words = clean_sentence.lower().split()
+            first_words = words[:3] if len(words) >= 3 else words
+
+            # Check if any of first 3 words is imperative verb
+            has_imperative = any(
+                any(word.startswith(verb) for verb in imperative_verbs)
+                for word in first_words
+            )
+
+            if has_imperative:
                 imperative_count += 1
-        
+
         return imperative_count / len(sentences)
     
     def _calculate_avg_sentence_length(self, content: str) -> float:
