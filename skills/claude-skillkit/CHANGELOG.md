@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to the Advanced Skill Creator project will be documented in this file.
+All notable changes to the Claude Skill Kit project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -221,6 +221,7 @@ Comprehensive quality assurance improvements addressing Test Session #3 findings
 
 | Version | Date | Key Changes |
 |---------|------|-------------|
+| **1.2.0** | 2025-11-13 | Quality assurance improvements, 81% of issues fixed, new utilities |
 | **1.0.1** | 2025-11-11 | JSON standardization, navigation improvements |
 | **1.0.0** | 2025-11-10 | Initial release with 12-step workflow, 9 tools, 22 knowledge files |
 
@@ -284,5 +285,5 @@ Changes are tracked through:
 
 ---
 
-**Generated with:** Advanced Skill Creator v1.0.1
-**Last Updated:** 2025-11-11
+**Generated with:** Claude Skill Kit v1.2.0
+**Last Updated:** 2025-11-13
