@@ -27,6 +27,47 @@ except ImportError:
     SkillPackageValidator = None  # Graceful fallback
 
 
+def is_project_directory(path):
+    """
+    Check if a directory appears to be a valid project directory.
+
+    A project directory is identified by common markers like:
+    - .git (git repository)
+    - package.json (Node.js project)
+    - pyproject.toml or setup.py (Python project)
+    - Cargo.toml (Rust project)
+    - go.mod (Go project)
+    - pom.xml or build.gradle (Java project)
+
+    Args:
+        path: Path object to check
+
+    Returns:
+        bool: True if directory appears to be a project directory
+    """
+    if not path.is_dir():
+        return False
+
+    project_markers = [
+        '.git',
+        'package.json',
+        'pyproject.toml',
+        'setup.py',
+        'Cargo.toml',
+        'go.mod',
+        'pom.xml',
+        'build.gradle',
+        'composer.json',  # PHP
+        'Gemfile',        # Ruby
+    ]
+
+    for marker in project_markers:
+        if (path / marker).exists():
+            return True
+
+    return False
+
+
 def package_skill(skill_path, output_dir=None, strict=False):
     """
     Package a skill folder into a .skill file.
@@ -95,24 +136,36 @@ def package_skill(skill_path, output_dir=None, strict=False):
         # Fallback if validator not available
         print(f"⚠️ Reference validation skipped (utility unavailable)\n")
 
-    # Determine output location
+    # Determine output location (hybrid approach)
     skill_name = skill_path.name
     if output_dir:
+        # Priority 1: User-specified output directory
         output_path = Path(output_dir).resolve()
         output_path.mkdir(parents=True, exist_ok=True)
+        print(f"📁 Output directory (user-specified): {output_path}")
     else:
-        output_path = Path.cwd()
+        # Priority 2: Check if parent directory is a valid project directory
+        parent_dir = skill_path.parent
+        if is_project_directory(parent_dir):
+            output_path = parent_dir
+            print(f"📁 Output directory (project directory detected): {output_path}")
+        else:
+            # Priority 3: Use current working directory
+            output_path = Path.cwd()
+            print(f"📁 Output directory (current working directory): {output_path}")
 
     skill_filename = output_path / f"{skill_name}.skill"
 
     # Create the .skill file (zip format)
     try:
+        print(f"\n📦 Creating archive: {skill_filename.name}")
         with zipfile.ZipFile(skill_filename, 'w', zipfile.ZIP_DEFLATED) as zipf:
             # Walk through the skill directory
             for file_path in skill_path.rglob('*'):
                 if file_path.is_file():
                     # Calculate the relative path within the zip
-                    arcname = file_path.relative_to(skill_path.parent)
+                    # Use skill_path (not skill_path.parent) to avoid wrapper folder
+                    arcname = file_path.relative_to(skill_path)
                     zipf.write(file_path, arcname)
                     print(f"  Added: {arcname}")
 
