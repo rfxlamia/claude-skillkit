@@ -6,7 +6,7 @@
 
 > Professional skill creation with research-driven workflow and automated validation.
 
-**Version:** 1.2.0
+**Version:** 1.2.1
 
 A comprehensive framework for creating and validating Claude Code skills with quality targets of 9.0/10+. Features research-driven workflows, 9 automation scripts, and multi-layer validation checkpoints.
 
